@@ -5,4 +5,8 @@
     <string name="external_storage__permission_rationale">You should provide read/write external storage permissions, so the app can save the weather photo.</string>
     <string name="location_permission_rationale">Enable the location access so the app can access weather data.</string>
     <string name="camera_permission_rationale">Enable the camera access to be able to take photos.</string>
+    <string name="sample_temp_text">22°</string>
+    <string name="temp_text">%.2f°</string>
+    <string name="txt_wind">%.2fkm/h</string>
+    <string name="txt_location">I AM HERE\n%s</string>
 </resources>
