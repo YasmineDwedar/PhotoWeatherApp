@@ -5,6 +5,11 @@
 
     <data>
 
+
+
+        <variable
+            name="weather"
+            type="com.example.photoweatherapp.models.WeatherResponse" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,6 +45,7 @@
 
             <TextView
                 android:id="@+id/tv_temp"
+                android:text="@{@string/temp_text(weather.main.temp)}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
@@ -52,8 +58,9 @@
 
             <ImageView
                 android:id="@+id/iv_weather_icon"
-
                 android:layout_width="50dp"
+                android:background="@drawable/sample_weather_icon"
+                android:src="@drawable/sample_weather_icon"
                 android:layout_height="50dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
@@ -65,9 +72,9 @@
                 android:id="@+id/tv_feels_like_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="txt_feels_like"
+                android:text="Feels Like"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/iv_weather_icon"
@@ -81,17 +88,19 @@
                 android:textColor="@android:color/white"
                 android:textSize="25sp"
                 android:textStyle="bold"
+                tools:text="hbjnkm"
                 app:layout_constraintStart_toStartOf="@id/iv_weather_icon"
                 app:layout_constraintTop_toBottomOf="@id/tv_feels_like_title"
-                tools:text="sample_temp_text" />
+                android:text="@{@string/temp_text(weather.main.feels_like)}"
+                />
 
             <TextView
                 android:id="@+id/tv_wind_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="txt_wind_title"
+                android:text="Wind"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/iv_weather_icon"
@@ -99,6 +108,8 @@
 
             <TextView
                 android:id="@+id/tv_wind"
+                android:text="@{@string/txt_wind(weather.wind.speed)}"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
@@ -115,6 +126,8 @@
                 android:layout_marginTop="20dp"
                 android:textColor="@android:color/white"
                 android:textSize="25sp"
+                android:visibility="invisible"
+                android:text="@{@string/txt_location(weather.name)+' '+weather.sys.country}"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/iv_weather_icon"
                 app:layout_constraintTop_toBottomOf="@id/tv_wind"
