@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">PhotoWeatherApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="no_data_available">No data available</string>
+    <string name="external_storage__permission_rationale">You should provide read/write external storage permissions, so the app can save the weather photo.</string>
+    <string name="location_permission_rationale">Enable the location access so the app can access weather data.</string>
+    <string name="camera_permission_rationale">Enable the camera access to be able to take photos.</string>
 </resources>
