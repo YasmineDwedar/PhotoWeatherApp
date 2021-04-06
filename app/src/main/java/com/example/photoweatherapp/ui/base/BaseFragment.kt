@@ -31,6 +31,8 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutID, container, false);
         val view = binding?.getRoot()
+        initializeViewModel()
+        setObservers()
         setListeners()
         return view
 
@@ -69,16 +71,18 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
 
     @AfterPermissionGranted(CAMERA_PERMISSION)
     open fun openCameraAfterPermissionGranted() {
-        val perms = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
+        val perms = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
-            openCamera()
+            openTheCamera()
         } else {
             val rationale = getString(R.string.camera_permission_rationale)
             EasyPermissions.requestPermissions(this, rationale, CAMERA_PERMISSION, *perms)
         }
     }
 
-   open fun openCamera(){}
+   open fun openTheCamera(){
+
+   }
 
 
 
@@ -110,6 +114,6 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
     companion object {
         private const val LOCATION_PERMISSIONS = 101
         private const val CAMERA_PERMISSION = 102
-//        private const val EXTERNAL_STORAGE_PERMISSIONS = 103
+        private const val EXTERNAL_STORAGE_PERMISSIONS = 103
     }
 }
