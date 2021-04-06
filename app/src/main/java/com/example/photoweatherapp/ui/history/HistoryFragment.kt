@@ -15,8 +15,8 @@ import com.example.photoweatherapp.util.LocationProvider
 import pub.devrel.easypermissions.EasyPermissions
 
 
-class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_history),
-    LocationProvider.GetLocationCoordinatesCallBack {
+class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_history)
+   {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,22 +28,19 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_h
 
     override fun setListeners() {
         binding?.fabTakePhoto?.setOnClickListener {
-            openCamera()
-//            getCurrentLocation()
+            openTheCamera()
+
 
 
         }
 
     }
 
-    override fun openCamera() {
+    override fun openTheCamera() {
         findNavController().navigate(R.id.action_historyFragment_to_photoFragment)
     }
 
-    override fun getCurrentLocation() {
-        val locationProvider = LocationProvider(requireContext(), this)
-        locationProvider.requestNewLocationData()
-    }
+
 
 
     override fun setObservers() {
@@ -52,14 +49,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_h
     override fun initializeViewModel() {
     }
 
-    override fun sendCoordinates(long: Double, lat: Double) {
-        //send these to vieModel
-        Toast.makeText(
-            requireContext(),
-            "lat" + lat.toString() + "long" + long.toString(),
-            Toast.LENGTH_SHORT
-        ).show()
-    }
+
 
 
 }
