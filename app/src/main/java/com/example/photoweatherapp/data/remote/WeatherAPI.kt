@@ -20,7 +20,8 @@ interface WeatherAPI {
     @GET(Constants.Current_Weather)
   suspend  fun getWeatherData(
         @Query("lat") latitude: Double,
-        @Query("lon") longitude: Double
+        @Query("lon") longitude: Double,
+        @Query("appid") api:String
     ): NetworkResponse<WeatherResponse, ErrorResponse>
 
 
