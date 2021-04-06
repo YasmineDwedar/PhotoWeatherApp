@@ -6,14 +6,14 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class WeatherResponse(
     val base: String,
-    val clouds: Clouds,
+    val clouds: Clouds?,
     val cod: Int,
-    val coord: Coord,
+    val coord: Coord?,
     val dt: Int,
     val id: Int,
     val main: Main,
     val name: String,
-    val sys: Sys,
+    val sys: Sys?,
     val timezone: Int,
     val visibility: Int,
     val weather: List<Weather>,
@@ -32,7 +32,7 @@ data class Weather(
 @Parcelize
 data class Wind(
     val deg: Int,
-    val gust: Double,
+    val gust: Double?,
     val speed: Double
 ):Parcelable
 
@@ -57,8 +57,8 @@ data class Main(
 
 @Parcelize
 data class Coord(
-    val lat: Int,
-    val lon: Int
+    val lat: Double,
+    val lon: Double
 ):Parcelable
 
 @Parcelize
