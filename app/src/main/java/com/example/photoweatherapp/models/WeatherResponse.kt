@@ -16,7 +16,7 @@ data class WeatherResponse(
     val id: Int,
     val main: Main,
     val name: String,
-    val sys: Sys?,
+    val sys: Sys,
     val timezone: Int,
     val visibility: Int,
     val weather: List<Weather>,
@@ -34,28 +34,20 @@ data class Weather(
 
 @Parcelize
 data class Wind(
-    val deg: Int,
-    val gust: Double?,
     val speed: Double
 ):Parcelable
 
 @Parcelize
 data class Sys(
-    val country: String,
-    val id: Int,
-    val sunrise: Int,
-    val sunset: Int,
-    val type: Int
+    val country: String
+
 ):Parcelable
 
 @Parcelize
 data class Main(
     val feels_like: Double,
-    val humidity: Int,
-    val pressure: Int,
     val temp: Double,
-    val temp_max: Double,
-    val temp_min: Double
+
 ):Parcelable
 
 @Parcelize
