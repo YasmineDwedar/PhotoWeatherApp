@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+
 data class WeatherResponse(
     val base: String,
     val clouds: Clouds?,

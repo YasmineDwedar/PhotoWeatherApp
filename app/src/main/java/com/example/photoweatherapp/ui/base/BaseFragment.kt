@@ -50,14 +50,7 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-           openTheCamera()
-        } else {
-            Toast.makeText(requireContext(), "you_cannot_make_call_without_permission", Toast.LENGTH_SHORT).show()
-        }
-
-
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
@@ -80,24 +73,6 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
 
         @AfterPermissionGranted(CAMERA_PERMISSION)
     open fun openCameraAfterPermissionGranted() {
-//        val perms = arrayOf(
-//            Manifest.permission.CAMERA,
-//            Manifest.permission.READ_EXTERNAL_STORAGE,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE
-//        )
-//
-//        if (ContextCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.CAMERA
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            openTheCamera()
-//        } else {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                requestPermissions(perms, 1)
-//            }
-//        }
-
         val perms = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
             openTheCamera()
@@ -108,7 +83,7 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
     }
 
     open fun openTheCamera() {
-        Toast.makeText(requireContext(), "permission granted", Toast.LENGTH_SHORT).show()
+
     }
 
 

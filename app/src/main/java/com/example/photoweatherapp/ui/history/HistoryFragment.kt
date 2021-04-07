@@ -29,7 +29,8 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_h
     override fun setListeners() {
         binding?.fabTakePhoto?.setOnClickListener {
 //            openTheCamera()
-openCameraAfterPermissionGranted()
+       openCameraAfterPermissionGranted()
+            getUserCurrentLocation()
 
 
         }
