@@ -1,6 +1,7 @@
 package com.example.photoweatherapp.ui.capture
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -14,7 +15,9 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.photoweatherapp.R
+import com.example.photoweatherapp.data.local.WeatherInfo
 import com.example.photoweatherapp.databinding.FragmentCaptureBinding
+import com.example.photoweatherapp.models.WeatherResponse
 import com.example.photoweatherapp.ui.base.BaseFragment
 import com.example.photoweatherapp.ui.photo.PhotoFragmentViewModel
 import com.example.photoweatherapp.util.ImageLoader
@@ -22,6 +25,7 @@ import com.example.photoweatherapp.util.LocationProvider
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.PictureResult
 import kotlinx.android.synthetic.main.fragment_capture.*
+import kotlinx.coroutines.InternalCoroutinesApi
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -33,6 +37,8 @@ class CaptureFragment : BaseFragment<FragmentCaptureBinding>(R.layout.fragment_c
 
     private var viewModel: PhotoFragmentViewModel? = null
     private var imagePath: File? = null
+ lateinit var  img :String
+    private var weatherResponse: WeatherResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,19 +52,28 @@ class CaptureFragment : BaseFragment<FragmentCaptureBinding>(R.layout.fragment_c
 
     override fun onResume() {
         super.onResume()
+        binding?.camView?.open()
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        binding?.camView?.close()
+    }
+    @InternalCoroutinesApi
     override fun setListeners() {
-        binding?.camView?.open()
+
         binding?.camView?.addCameraListener(object : CameraListener() {
             override fun onPictureTaken(result: PictureResult) {
                 result.toBitmap(camView.width, camView.height) {
                     Log.d("TAG", "onPictureTaken: ${it}")
                     binding?.apply {
-                        takeImage_group.visibility = View.GONE
+//                        takeImage_group.visibility = View.GONE
+                        camView.visibility = View.GONE
+                        btnCapturePhoto.visibility = View.GONE
                         ivCaptured.visibility = View.VISIBLE
                         ivCaptured.setImageBitmap(it)
+                        img = ImageLoader.BitMapToString(it!!)
                         btnSharePhoto.visibility = View.VISIBLE
                         //MakeScreenshot
                     }
@@ -76,19 +91,25 @@ class CaptureFragment : BaseFragment<FragmentCaptureBinding>(R.layout.fragment_c
                 camView.takePicture()
             }
             btnSharePhoto.setOnClickListener {
-                btnSharePhoto.visibility=View.INVISIBLE
-                Toast.makeText(requireContext(), "share now", Toast.LENGTH_SHORT).show()
-//                sharePhoto()
-                //ScreenShot
+                btnSharePhoto.visibility = View.INVISIBLE
                 val lay = requireActivity().findViewById(R.id.root_layout) as ConstraintLayout
                 val screenshot: Bitmap = getScreenShot(lay)
                 Log.d("TAG", "onPictureTaken: ${screenshot}")
-
                 saveBitmap(screenshot)
-             var stringImg=   ImageLoader.BitMapToString(screenshot)
-                //save it to roomDB
-                shareIt()
+                Log.d("TAG", "setListeners: global zz ${weatherResponse?.sys?.country}")
+                weather?.let {
+                    val weatherInfo = WeatherInfo(
+                        it.main.feels_like,
+                        it.main.temp,
+                        it.name,
+                        it.sys,
+                        it.wind,
+                        img
+                    )
+                    viewModel?.insertWeatherInfo(weatherInfo)
+                }
 
+                shareIt()
 
             }
         }
@@ -106,14 +127,18 @@ class CaptureFragment : BaseFragment<FragmentCaptureBinding>(R.layout.fragment_c
 
     override fun setObservers() {
         showProgress()
+        binding?.btnCapturePhoto?.visibility=View.GONE
+
         viewModel?.networkState?.observe(viewLifecycleOwner, {
             handleError(it)
         })
 
         viewModel?.locationLiveData?.observe(viewLifecycleOwner, {
             hideProgress()
+            weatherResponse = it
             binding?.weather = it
             binding?.apply {
+                btnCapturePhoto.visibility=View.VISIBLE
                 tvLocation.visibility = View.VISIBLE
                 ivWeatherIcon.setImageResource(R.drawable.sample_weather_icon)
             }
@@ -146,36 +171,6 @@ class CaptureFragment : BaseFragment<FragmentCaptureBinding>(R.layout.fragment_c
         locationProvider.requestNewLocationData()
     }
 
-//    fun store(bm: Bitmap, fileName: String?) {
-//        val dirPath: String =
-//            Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/Screenshots"
-//        val dir = File(dirPath)
-//        if (!dir.exists()) dir.mkdirs()
-//        val file = File(dirPath, fileName)
-//        try {
-//            val fOut = FileOutputStream(file)
-//            bm.compress(Bitmap.CompressFormat.PNG, 85, fOut)
-//            fOut.flush()
-//            fOut.close()
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//    }
-
-    //    private fun shareImage(file: File) {
-//        val uri: Uri = Uri.fromFile(file)
-//        val intent = Intent()
-//        intent.action = Intent.ACTION_SEND
-//        intent.type = "image/*"
-//        intent.putExtra(Intent.EXTRA_SUBJECT, "")
-//        intent.putExtra(Intent.EXTRA_TEXT, "")
-//        intent.putExtra(Intent.EXTRA_STREAM, uri)
-//        try {
-//            startActivity(Intent.createChooser(intent, "Share Screenshot"))
-//        } catch (e: ActivityNotFoundException) {
-//            Toast.makeText(context, "No App Available", Toast.LENGTH_SHORT).show()
-//        }
-//    }
     private fun shareIt() {
         val uri = Uri.fromFile(imagePath)
         val sharingIntent = Intent(Intent.ACTION_SEND)
@@ -191,7 +186,7 @@ class CaptureFragment : BaseFragment<FragmentCaptureBinding>(R.layout.fragment_c
     }
 
     fun saveBitmap(bitmap: Bitmap) {
-        imagePath = File(Environment.getExternalStorageDirectory().toString() + "/screenshot.png")
+        imagePath = File(requireContext().getExternalCacheDir()?.absolutePath + "/screenshot.png")
         val fos: FileOutputStream
         try {
             fos = FileOutputStream(imagePath)
@@ -204,4 +199,7 @@ class CaptureFragment : BaseFragment<FragmentCaptureBinding>(R.layout.fragment_c
             Log.e("GREC", e.message, e)
         }
     }
+
+
+
 }
