@@ -1,16 +1,19 @@
 package com.example.photoweatherapp.models
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-
+@Entity(tableName = "weather")
 data class WeatherResponse(
     val base: String,
     val clouds: Clouds?,
     val cod: Int,
     val coord: Coord?,
     val dt: Int,
+    @PrimaryKey
     val id: Int,
     val main: Main,
     val name: String,
