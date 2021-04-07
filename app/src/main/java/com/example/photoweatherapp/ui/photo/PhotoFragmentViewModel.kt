@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.photoweatherapp.data.local.WeatherInfo
 import com.example.photoweatherapp.data.repository.WeatherRepository
 import com.example.photoweatherapp.models.WeatherResponse
 import com.example.photoweatherapp.ui.base.BaseViewModel
 import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
 /**
@@ -38,7 +40,14 @@ fun getWeatherData(lat:Double,long:Double){
 }
 
 
+     @InternalCoroutinesApi
+     fun insertWeatherInfo(weatherInfo: WeatherInfo) {
+         viewModelScope.launch (Dispatchers.IO){
+            weatherRepository.insertWeatherInfo(weatherInfo)
 
+
+         }
+     }
 
 
 
