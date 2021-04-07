@@ -1,12 +1,10 @@
 package com.example.photoweatherapp.ui.capture
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +17,6 @@ import com.example.photoweatherapp.data.local.WeatherInfo
 import com.example.photoweatherapp.databinding.FragmentCaptureBinding
 import com.example.photoweatherapp.models.WeatherResponse
 import com.example.photoweatherapp.ui.base.BaseFragment
-import com.example.photoweatherapp.ui.photo.PhotoFragmentViewModel
 import com.example.photoweatherapp.util.ImageLoader
 import com.example.photoweatherapp.util.LocationProvider
 import com.otaliastudios.cameraview.CameraListener
@@ -35,7 +32,7 @@ import java.io.IOException
 class CaptureFragment : BaseFragment<FragmentCaptureBinding>(R.layout.fragment_capture),
     LocationProvider.GetLocationCoordinatesCallBack {
 
-    private var viewModel: PhotoFragmentViewModel? = null
+    private var viewModel: CaptureFragmentViewModel? = null
     private var imagePath: File? = null
  lateinit var  img :String
     private var weatherResponse: WeatherResponse? = null
@@ -146,7 +143,7 @@ class CaptureFragment : BaseFragment<FragmentCaptureBinding>(R.layout.fragment_c
     }
 
     override fun initializeViewModel() {
-        viewModel = ViewModelProvider(this).get(PhotoFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CaptureFragmentViewModel::class.java)
 
     }
 
