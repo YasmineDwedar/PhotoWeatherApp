@@ -24,7 +24,7 @@ import java.io.ByteArrayOutputStream
             }
         }
 
-        fun BitMapToString(bitmap: Bitmap): String? {
+        fun BitMapToString(bitmap: Bitmap): String {
             val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
             val b = baos.toByteArray()
