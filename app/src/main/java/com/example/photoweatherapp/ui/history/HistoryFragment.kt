@@ -28,8 +28,8 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_h
 
     override fun setListeners() {
         binding?.fabTakePhoto?.setOnClickListener {
-            openTheCamera()
-
+//            openTheCamera()
+openCameraAfterPermissionGranted()
 
 
         }
@@ -37,7 +37,8 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_h
     }
 
     override fun openTheCamera() {
-        findNavController().navigate(R.id.action_historyFragment_to_photoFragment)
+//        findNavController().navigate(R.id.action_historyFragment_to_photoFragment)
+        findNavController().navigate(R.id.action_historyFragment_to_captureFragment)
     }
 
 

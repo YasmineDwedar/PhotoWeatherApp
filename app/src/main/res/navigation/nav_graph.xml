@@ -10,9 +10,16 @@
         <action
             android:id="@+id/action_historyFragment_to_photoFragment"
             app:destination="@id/photoFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_captureFragment"
+            app:destination="@id/captureFragment" />
     </fragment>
     <fragment
         android:id="@+id/photoFragment"
         android:name="com.example.photoweatherapp.ui.photo.PhotoFragment"
         android:label="PhotoFragment" />
+    <fragment
+        android:id="@+id/captureFragment"
+        android:name="com.example.photoweatherapp.ui.capture.CaptureFragment"
+        android:label="CaptureFragment" />
 </navigation>

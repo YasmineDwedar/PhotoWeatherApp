@@ -105,6 +105,10 @@ dependencies {
 
     //EasyPermissions is a wrapper library to simplify basic system permissions logic when targeting Android M or higher.
     implementation "pub.devrel:easypermissions:3.0.0"
+
+    //cameraView
+    api 'com.otaliastudios:cameraview:2.7.0'
+
 //
 //    //Dagger
 //    def dagger_version = "2.28"

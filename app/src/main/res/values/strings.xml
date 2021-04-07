@@ -9,4 +9,6 @@
     <string name="temp_text">%.2f°</string>
     <string name="txt_wind">%.2fkm/h</string>
     <string name="txt_location">I AM HERE\n%s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

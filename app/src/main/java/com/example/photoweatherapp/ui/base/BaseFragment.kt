@@ -2,12 +2,15 @@ package com.example.photoweatherapp.ui.base
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -47,7 +50,14 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+//        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+           openTheCamera()
+        } else {
+            Toast.makeText(requireContext(), "you_cannot_make_call_without_permission", Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
@@ -62,15 +72,32 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
     }
 
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
         }
     }
 
-    @AfterPermissionGranted(CAMERA_PERMISSION)
+        @AfterPermissionGranted(CAMERA_PERMISSION)
     open fun openCameraAfterPermissionGranted() {
+//        val perms = arrayOf(
+//            Manifest.permission.CAMERA,
+//            Manifest.permission.READ_EXTERNAL_STORAGE,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//        )
+//
+//        if (ContextCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.CAMERA
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            openTheCamera()
+//        } else {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                requestPermissions(perms, 1)
+//            }
+//        }
+
         val perms = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
             openTheCamera()
@@ -80,10 +107,9 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
         }
     }
 
-   open fun openTheCamera(){
-
-   }
-
+    open fun openTheCamera() {
+        Toast.makeText(requireContext(), "permission granted", Toast.LENGTH_SHORT).show()
+    }
 
 
     open fun getCurrentLocation() {
@@ -93,7 +119,10 @@ abstract class BaseFragment<VDB : ViewDataBinding> constructor(val layoutID: Int
     @AfterPermissionGranted(LOCATION_PERMISSIONS)
     open fun getUserCurrentLocation() {
 
-      val locationPermissions= arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+        val locationPermissions = arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
 
         if (EasyPermissions.hasPermissions(requireContext(), *locationPermissions)) {
             getCurrentLocation()
