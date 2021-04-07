@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Yasmine on April,2021
@@ -13,10 +14,10 @@ interface WeatherDAO {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWeatherInfo(weather: List<WeatherInfo>)
+    suspend fun insertWeatherInfo(weather: WeatherInfo)
 
     @Query("SELECT * FROM weather")
-    suspend fun getAllWeatherInfo(): List<WeatherInfo>
+    fun getAllWeatherInfo(): Flow<List<WeatherInfo>>
 
- 
+
 }
