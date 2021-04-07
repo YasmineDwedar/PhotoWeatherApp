@@ -14,9 +14,7 @@ import kotlinx.coroutines.launch
 @InternalCoroutinesApi
 class HistoryFragmentViewModel : ViewModel() {
 
-    //     private var _weatherListLiveData = MutableLiveData<List<WeatherInfo>>()
-//         val weatherListLiveData: LiveData<List<WeatherInfo>>
-//             get() = _weatherListLiveData
+
     var weatherRepository = WeatherRepository()
     val weatherListLiveData = liveData(Dispatchers.IO) {
         weatherRepository.getSavedInfo()?.collect {
@@ -25,24 +23,5 @@ class HistoryFragmentViewModel : ViewModel() {
     }
 
 
-    init {
-//    getSavedInfo()
-//    viewModelScope.launch (Dispatchers.IO) {
-//
-//        val data = weatherRepository.getSavedInfo()?.collect {
-//            _weatherListLiveData.postValue(it)
-//        }
-//    }
-    }
-
-
-//    @InternalCoroutinesApi
-//    fun getSavedInfo(){
-//        viewModelScope.launch (Dispatchers.IO){
-//          _weatherListLiveData.postValue(weatherRepository.getSavedInfo())
-//
-//
-//        }
-//    }
 
 }
